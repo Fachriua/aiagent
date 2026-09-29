@@ -1,5 +1,7 @@
 node_modules
-*.sqlite
 .env
+.env.*
+!.env.example
 dist
-build
+.prisma
+.DS_Store

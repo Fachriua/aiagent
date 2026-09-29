@@ -1,16 +1,20 @@
+require('dotenv').config();
 const express = require('express');
-const sqlite3 = require('sqlite3').verbose();
-const dotenv = require('dotenv');
-dotenv.config();
+const { Pool } = require('pg');
 
 const app = express();
-const db = new sqlite3.Database(process.env.DB_PATH || './database.sqlite');
-
 app.use(express.json());
 
-db.run(`CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, email TEXT, password TEXT)`);
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+});
 
-app.get('/', (req, res) => res.send('API Running'));
+pool.connect((err) => {
+  if (err) console.error('Database connection error:', err.stack);
+  else console.log('Connected to PostgreSQL database');
+});
+
+app.get('/health', (req, res) => res.status(200).send('OK'));
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

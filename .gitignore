@@ -1,7 +1,5 @@
 node_modules
 .env
-.env.*
-!.env.example
 dist
-.prisma
 .DS_Store
+*.log
